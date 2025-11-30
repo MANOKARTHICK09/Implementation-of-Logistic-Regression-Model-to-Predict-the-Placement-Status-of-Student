@@ -8,111 +8,96 @@ To write a program to implement the the Logistic Regression Model to Predict the
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. Import the required packages and print the present data.
-2. Print the placement data and salary data.
-3. Find the null and duplicate values.
-4. Using logistic regression find the predicted values of   accuracy , confusion matrices.
-5. Display the results.
-  
-
-
+1.Load the dataset, drop unnecessary columns, and encode categorical variables.
+2.Define the features (X) and target variable (y).
+3.Split the data into training and testing sets.
+4.Train the logistic regression model, make predictions, and evaluate using accuracy and other
 ## Program:
 ```
-
+/*
 Program to implement the the Logistic Regression Model to Predict the Placement Status of Student.
-Developed by: MANO KARTHICK
-RegisterNumber: 212222230077
-
-
-
+Developed by: Mano karthick
+RegisterNumber:  22002165
+*/
+```
+```
 import pandas as pd
-data=pd.read_csv("/content/Placement_Data.csv")
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+data = pd.read_csv(r"C:\Users\admin\Desktop\Placement_Data.csv")
 data.head()
 
-data1=data.copy()
-data1=data1.drop(["sl_no","salary"],axis=1)#Browses the specified row or column
-data1.head()
+datal = data.copy()
+datal = datal.drop(["sl_no", "salary"], axis=1)
+datal.head()
 
-data1.isnull().sum()
+print("Missing values:\n", datal.isnull().sum())
+print("Duplicate rows:", datal.duplicated().sum())
 
-data1.duplicated().sum()
+le = LabelEncoder()
+datal["gender"] = le.fit_transform(datal["gender"])
+datal["ssc_b"] = le.fit_transform(datal["ssc_b"])
+datal["hsc_b"] = le.fit_transform(datal["hsc_b"])
+datal["hsc_s"] = le.fit_transform(datal["hsc_s"])
+datal["degree_t"] = le.fit_transform(datal["degree_t"])
+datal["workex"] = le.fit_transform(datal["workex"])
+datal["specialisation"] = le.fit_transform(datal["specialisation"])
+datal["status"] = le.fit_transform(datal["status"])
 
-from sklearn.preprocessing import LabelEncoder
-le=LabelEncoder()
-data1["gender"]=le.fit_transform(data1["gender"])
-data1["ssc_b"]=le.fit_transform(data1["ssc_b"])
-data1["hsc_b"]=le.fit_transform(data1["hsc_b"])
-data1["hsc_s"]=le.fit_transform(data1["hsc_s"])
-data1["degree_t"]=le.fit_transform(data1["degree_t"])
-data1["workex"]=le.fit_transform(data1["workex"])
-data1["specialisation"]=le.fit_transform(data1["specialisation"] )     
-data1["status"]=le.fit_transform(data1["status"])       
-data1 
+x = datal.iloc[:, :-1]
+y = datal["status"]
 
-x=data1.iloc[:,:-1]
-x
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
 
-y=data1["status"]
-y
+lr = LogisticRegression(solver="liblinear")
+lr.fit(x_train, y_train)
 
-from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+y_pred = lr.predict(x_test)
 
-from sklearn.linear_model import LogisticRegression
-lr=LogisticRegression(solver="liblinear")
-lr.fit(x_train,y_train)
-y_pred=lr.predict(x_test)
-y_pred
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
 
-from sklearn.metrics import accuracy_score
-accuracy=accuracy_score(y_test,y_pred)
-accuracy
+confusion = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:\n", confusion)
 
-from sklearn.metrics import confusion_matrix
-confusion=confusion_matrix(y_test,y_pred)
-confusion
-
-from sklearn.metrics import classification_report
-classification_report1 = classification_report(y_test,y_pred)
-print(classification_report1)
-
-lr.predict([[1,80,1,90,1,1,90,1,0,85,1,85]])
+classification_report_output = classification_report(y_test, y_pred)
+print("Classification Report:\n", classification_report_output)
 ```
-
 ## Output:
+HEAD
 
-### Placement Data:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml401.png)
+![image](https://github.com/user-attachments/assets/6d3166e2-7fd9-4582-8729-4ba68a64036b)
 
-### Salary Data:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml402.png)
+COPY
+![image](https://github.com/user-attachments/assets/3e4ee2fa-f457-4c2c-a13a-d4791707c7d7)
 
-### Checking the null() function:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml403.png)
+FIT TRANSFORM
 
-### Data Duplicate: 
-![the Logistic Regression Model to Predict the Placement Status of Student](ml404.png)
+![image](https://github.com/user-attachments/assets/b0e4a287-35b1-4c2d-b386-d20f8f62b772)
 
-### print Data:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml405.png)
+LOGISTIC REGRESSION
 
-### Data-Status:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml406.png)
+![image](https://github.com/user-attachments/assets/49664d5e-2913-456b-95fa-dd7ae5a15637)
 
-### y_prediction  array:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml407.png)
+ACCURACY SCORE
 
-### Accuracy value:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml408.png)
+![image](https://github.com/user-attachments/assets/0e91c61e-abcb-400f-a04f-c36ec2885d1c)
 
-### Confusion array:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml409.png)
+CONFUSION MATRIX
 
-### Classification Report:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml410.png)
+![image](https://github.com/user-attachments/assets/58ce1bb2-1678-4407-9b13-cf33fabb3cc9)
 
-### Prediction of LR:
-![the Logistic Regression Model to Predict the Placement Status of Student](ml411.png)
+
+CLASSIFICATION REPORT & PREDICTION
+
+![image](https://github.com/user-attachments/assets/f1591a15-9289-4a4e-a284-20d5b58298b3)
+
+
+
+
 
 ## Result:
 Thus the program to implement the the Logistic Regression Model to Predict the Placement Status of Student is written and verified using python programming.
